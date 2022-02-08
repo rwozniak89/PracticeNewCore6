@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PracticeNewCore6.WebApp.Data;
+using PracticeNewCore6.WebApp.Models;
 
-namespace PracticeNewCore6.WebApp.Models
+namespace PracticeNewCore6.WebApp.Data
 {
     public static class SeedData
     {

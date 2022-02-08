@@ -25,12 +25,32 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+static void CreateDbIfNotExists(IHost host)
+{
+    using (var scope = host.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            DbInitializer.Initialize(context);
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occurred creating the DB.");
+        }
+    }
+}
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
     SeedData.Initialize(services);
 }
+
+CreateDbIfNotExists(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

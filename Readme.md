@@ -12,6 +12,10 @@ https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/dependency-injectio
 https://docs.microsoft.com/en-us/aspnet/core/mvc/views/dependency-injection?view=aspnetcore-6.0
 https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing?view=aspnetcore-6.0
 
+
+TEST controllers
+https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing?view=aspnetcore-6.0
+
 #DB
 ##in PMC
 if with identity

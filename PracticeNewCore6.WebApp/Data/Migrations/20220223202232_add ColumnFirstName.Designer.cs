@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PracticeNewCore6.WebApp.Data;
 
@@ -11,9 +12,10 @@ using PracticeNewCore6.WebApp.Data;
 namespace PracticeNewCore6.WebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220223202232_add ColumnFirstName")]
+    partial class addColumnFirstName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,63 +234,13 @@ namespace PracticeNewCore6.WebApp.Data.Migrations
                     b.Property<int>("Credits")
                         .HasColumnType("int");
 
-                    b.Property<int>("DepartmentID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CourseID");
 
-                    b.HasIndex("DepartmentID");
-
-                    b.ToTable("Course", (string)null);
-                });
-
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.CourseAssignment", b =>
-                {
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InstructorID")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseID", "InstructorID");
-
-                    b.HasIndex("InstructorID");
-
-                    b.ToTable("CourseAssignment", (string)null);
-                });
-
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Department", b =>
-                {
-                    b.Property<int>("DepartmentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentID"), 1L, 1);
-
-                    b.Property<decimal>("Budget")
-                        .HasColumnType("money");
-
-                    b.Property<int?>("InstructorID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("DepartmentID");
-
-                    b.HasIndex("InstructorID");
-
-                    b.ToTable("Department", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Enrollment", b =>
@@ -314,34 +266,7 @@ namespace PracticeNewCore6.WebApp.Data.Migrations
 
                     b.HasIndex("StudentID");
 
-                    b.ToTable("Enrollment", (string)null);
-                });
-
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Instructor", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<string>("FirstMidName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("FirstName");
-
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Instructor", (string)null);
+                    b.ToTable("Enrollments");
                 });
 
             modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Movie", b =>
@@ -378,21 +303,6 @@ namespace PracticeNewCore6.WebApp.Data.Migrations
                     b.ToTable("Movie");
                 });
 
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.OfficeAssignment", b =>
-                {
-                    b.Property<int>("InstructorID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("InstructorID");
-
-                    b.ToTable("OfficeAssignment", (string)null);
-                });
-
             modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Student", b =>
                 {
                     b.Property<int>("ID")
@@ -417,7 +327,7 @@ namespace PracticeNewCore6.WebApp.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Student", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -471,45 +381,6 @@ namespace PracticeNewCore6.WebApp.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Course", b =>
-                {
-                    b.HasOne("PracticeNewCore6.WebApp.Models.Department", "Department")
-                        .WithMany("Courses")
-                        .HasForeignKey("DepartmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.CourseAssignment", b =>
-                {
-                    b.HasOne("PracticeNewCore6.WebApp.Models.Course", "Course")
-                        .WithMany("CourseAssignments")
-                        .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PracticeNewCore6.WebApp.Models.Instructor", "Instructor")
-                        .WithMany("CourseAssignments")
-                        .HasForeignKey("InstructorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Instructor");
-                });
-
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Department", b =>
-                {
-                    b.HasOne("PracticeNewCore6.WebApp.Models.Instructor", "Administrator")
-                        .WithMany()
-                        .HasForeignKey("InstructorID");
-
-                    b.Navigation("Administrator");
-                });
-
             modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Enrollment", b =>
                 {
                     b.HasOne("PracticeNewCore6.WebApp.Models.Course", "Course")
@@ -529,35 +400,9 @@ namespace PracticeNewCore6.WebApp.Data.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.OfficeAssignment", b =>
-                {
-                    b.HasOne("PracticeNewCore6.WebApp.Models.Instructor", "Instructor")
-                        .WithOne("OfficeAssignment")
-                        .HasForeignKey("PracticeNewCore6.WebApp.Models.OfficeAssignment", "InstructorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Instructor");
-                });
-
             modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Course", b =>
                 {
-                    b.Navigation("CourseAssignments");
-
                     b.Navigation("Enrollments");
-                });
-
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Department", b =>
-                {
-                    b.Navigation("Courses");
-                });
-
-            modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Instructor", b =>
-                {
-                    b.Navigation("CourseAssignments");
-
-                    b.Navigation("OfficeAssignment")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PracticeNewCore6.WebApp.Models.Student", b =>

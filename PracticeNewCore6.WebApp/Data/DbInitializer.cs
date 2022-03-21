@@ -6,6 +6,14 @@ namespace PracticeNewCore6.WebApp.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
+            context.Database.EnsureCreated();
+
+            // Look for any students.
+            if (context.Students.Any())
+            {
+                return;   // DB has been seeded
+            }
+
             var students = new Student[]
             {
                 new Student { FirstMidName = "Carson",   LastName = "Alexander",
